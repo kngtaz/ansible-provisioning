@@ -1,0 +1,19 @@
+---
+- name: Job 1 - Validate technical requirements
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - ../vars/defaults.yml
+  vars:
+    stage_id: 01_validate_request
+    planned_tasks:
+      - 'Query the target compute API and designated network source of truth.'
+      - 'Validate capacity, image, network, IP/DNS availability, naming, ownership, and requested role.'
+      - 'On failure update ServiceNow and assign the ticket to the infrastructure admin; fail the job.'
+      - 'On resubmission revalidate the complete request before any resource changes.'
+  pre_tasks:
+    - name: Check request and skeleton execution mode
+      ansible.builtin.import_tasks: tasks/preflight.yml
+  tasks:
+    - name: Preview this job integration tasks
+      ansible.builtin.import_tasks: tasks/preview.yml

@@ -1,0 +1,19 @@
+---
+- name: Job 4B - Verify provisioning
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - ../vars/defaults.yml
+  vars:
+    stage_id: 04b_verify_provisioning
+    planned_tasks:
+      - 'Verify remote execution connectivity and applicable Satellite and IdM registrations.'
+      - 'Verify host group membership, machine certificate, baseline configuration, facts, and inventory.'
+      - 'For required application certificates confirm issuance and readiness for installation.'
+      - 'Write per-server verification results to ServiceNow; fail and assign to infrastructure admin if incomplete.'
+  pre_tasks:
+    - name: Check request and skeleton execution mode
+      ansible.builtin.import_tasks: tasks/preflight.yml
+  tasks:
+    - name: Preview this job integration tasks
+      ansible.builtin.import_tasks: tasks/preview.yml

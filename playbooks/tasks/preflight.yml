@@ -1,0 +1,46 @@
+---
+- name: Require a request payload
+  ansible.builtin.assert:
+    that:
+      - request is defined
+      - request is mapping
+    fail_msg: Supply -e @vars/request.example.yml or the approved ServiceNow payload.
+
+- name: Validate minimum request structure
+  ansible.builtin.assert:
+    that:
+      - request.ticket_number | default('') | length > 0
+      - request.ticket_sys_id | default('') | length > 0
+      - request.service_owner | default('') | length > 0
+      - request.environment | default('') | length > 0
+      - request.target.platform | default('') in ['vmware', 'cloud']
+      - request.source_of_truth | default('') in ['purview', 'infoblox']
+      - request.servers | default([]) | length > 0
+
+- name: Validate each server specification
+  ansible.builtin.assert:
+    that:
+      - server.name | default('') | length > 0
+      - server.os_family | default('') | length > 0
+      - server.image | default('') | length > 0
+      - server.vcpus | default(0) | int > 0
+      - server.memory_mb | default(0) | int > 0
+      - server.disk_gb | default(0) | int > 0
+      - server.role is defined
+      - server.requires_application_certificate is defined
+    fail_msg: A server specification is missing required fields.
+  loop: '{{ request.servers }}'
+  loop_control:
+    loop_var: server
+    label: '{{ server.name | default("unnamed") }}'
+
+- name: Reject duplicate names
+  ansible.builtin.assert:
+    that:
+      - (request.servers | map(attribute='name') | list | unique | length) == (request.servers | length)
+
+- name: Prevent execution of unimplemented integrations
+  ansible.builtin.assert:
+    that:
+      - skeleton_mode | bool
+    fail_msg: Live adapters are not implemented. Complete and validate them before enabling live execution.

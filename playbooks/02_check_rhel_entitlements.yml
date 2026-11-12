@@ -1,0 +1,19 @@
+---
+- name: Job 2 - Check RHEL subscription entitlement policy
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - ../vars/defaults.yml
+  vars:
+    stage_id: 02_check_rhel_entitlements
+    planned_tasks:
+      - 'For RHEL servers query the approved subscription allocation or entitlement authority.'
+      - 'Apply the service owner subscription policy; do not infer capacity from registration alone.'
+      - 'If insufficient route ServiceNow to the service owner and fail the job.'
+      - 'Bypass the entitlement check for non-RHEL servers.'
+  pre_tasks:
+    - name: Check request and skeleton execution mode
+      ansible.builtin.import_tasks: tasks/preflight.yml
+  tasks:
+    - name: Preview this job integration tasks
+      ansible.builtin.import_tasks: tasks/preview.yml

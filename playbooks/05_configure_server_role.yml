@@ -1,0 +1,21 @@
+---
+- name: Job 5 - Configure role and verify application
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - ../vars/defaults.yml
+  vars:
+    stage_id: 05_configure_server_role
+    planned_tasks:
+      - 'For each server with a role select an allowlisted role playbook; skip empty roles.'
+      - 'Configure the application and install issued application certificates.'
+      - 'Update application DNS CNAME records without overwriting unrelated or shared records.'
+      - 'Verify application health, certificate chain, and role configuration.'
+      - 'Update ServiceNow with final per-server status and route to requester for validation and closure.'
+      - 'On any failure record evidence, assign remediation, and leave the ticket open.'
+  pre_tasks:
+    - name: Check request and skeleton execution mode
+      ansible.builtin.import_tasks: tasks/preflight.yml
+  tasks:
+    - name: Preview this job integration tasks
+      ansible.builtin.import_tasks: tasks/preview.yml

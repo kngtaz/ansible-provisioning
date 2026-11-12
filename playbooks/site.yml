@@ -1,0 +1,8 @@
+---
+# Sequential local walkthrough; AAP uses individual job templates.
+- ansible.builtin.import_playbook: 01_validate_request.yml
+- ansible.builtin.import_playbook: 02_check_rhel_entitlements.yml
+- ansible.builtin.import_playbook: 03_provision_instances.yml
+- ansible.builtin.import_playbook: 04a_post_provision.yml
+- ansible.builtin.import_playbook: 04b_verify_provisioning.yml
+- ansible.builtin.import_playbook: 05_configure_server_role.yml

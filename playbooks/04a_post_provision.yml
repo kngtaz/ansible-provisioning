@@ -1,0 +1,23 @@
+---
+- name: Job 4A - Verify host creation and post-provision
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - ../vars/defaults.yml
+  vars:
+    stage_id: 04a_post_provision
+    planned_tasks:
+      - 'Use resource IDs from Job 3 to verify each instance exists and is reachable.'
+      - 'Rebuild target inventory in this job from trusted metadata; add_host state does not survive separate AAP jobs.'
+      - 'Register applicable hosts with Satellite and IdM.'
+      - 'Request a machine certificate from IdM and add the host to its HBAC host group.'
+      - 'Update the designated network inventory with host IP, MAC, and ownership metadata.'
+      - 'Write the nonsecret ownership fact using templates/ownership.fact.j2 and run additional baseline tasks.'
+      - 'For roles requiring certificates generate CSRs on the host, submit to Red Hat Certificate Server, and wait for issuance.'
+      - 'Keep private keys on the host or approved secret store; pass only certificate references between jobs.'
+  pre_tasks:
+    - name: Check request and skeleton execution mode
+      ansible.builtin.import_tasks: tasks/preflight.yml
+  tasks:
+    - name: Preview this job integration tasks
+      ansible.builtin.import_tasks: tasks/preview.yml

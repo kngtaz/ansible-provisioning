@@ -1,0 +1,17 @@
+---
+- name: Failure callback scaffold
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - ../vars/defaults.yml
+  pre_tasks:
+    - name: Check request and skeleton execution mode
+      ansible.builtin.import_tasks: tasks/preflight.yml
+  tasks:
+    - name: Preview failure reporting
+      ansible.builtin.debug:
+        msg:
+          - 'SKELETON ONLY: obtain failed node details from Controller using the workflow job ID.'
+          - 'Job 2 entitlement failures go to the service owner; other job failures go to infrastructure admin.'
+          - 'Update ServiceNow work notes and assignment; keep the request open.'
+          - 'Do not depend on artifacts from a failed or unreachable job being present.'

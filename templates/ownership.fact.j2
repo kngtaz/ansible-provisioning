@@ -1,0 +1,7 @@
+{{ {
+  'ticket_number': request.ticket_number,
+  'service_owner': request.service_owner,
+  'environment': request.environment,
+  'server_name': server.name,
+  'server_role': server.role
+} | to_nice_json }}

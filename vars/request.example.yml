@@ -1,0 +1,33 @@
+---
+# Synthetic request only. No passwords, tokens, or private keys belong here.
+request:
+  ticket_number: RITM0000001
+  ticket_sys_id: replace-with-servicenow-sys-id
+  service_owner: example-service-owner
+  infrastructure_assignment_group: example-infrastructure-group
+  service_owner_assignment_group: example-service-owner-group
+  environment: poc
+  source_of_truth: infoblox  # infoblox or purview; validate the actual product/API
+  target:
+    platform: vmware  # vmware or cloud; select a specific cloud provider later
+    location: example-datacenter
+    network: example-network
+  servers:
+    - name: poc-rhel-01.example.test
+      os_family: rhel
+      image: approved-rhel-image
+      vcpus: 2
+      memory_mb: 4096
+      disk_gb: 40
+      role: splunk
+      requires_application_certificate: true
+      idm_hostgroup: example-hbac-hostgroup
+    - name: poc-rhel-02.example.test
+      os_family: rhel
+      image: approved-rhel-image
+      vcpus: 2
+      memory_mb: 4096
+      disk_gb: 40
+      role: ''
+      requires_application_certificate: false
+      idm_hostgroup: example-hbac-hostgroup

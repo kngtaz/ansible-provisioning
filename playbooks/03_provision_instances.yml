@@ -1,0 +1,20 @@
+---
+- name: Job 3 - Provision instances
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - ../vars/defaults.yml
+  vars:
+    stage_id: 03_provision_instances
+    planned_tasks:
+      - 'Recheck approved target and use an idempotency key based on ticket and server identity.'
+      - 'Call the selected VMware management or cloud provider adapter for each server.'
+      - 'Collect immutable resource ID, provider, hostname, IP, MAC, and per-server result.'
+      - 'Publish nonsecret resource metadata using set_stats for downstream AAP jobs.'
+      - 'On partial failure preserve created-resource evidence and route to infrastructure admin; no automatic deletion.'
+  pre_tasks:
+    - name: Check request and skeleton execution mode
+      ansible.builtin.import_tasks: tasks/preflight.yml
+  tasks:
+    - name: Preview this job integration tasks
+      ansible.builtin.import_tasks: tasks/preview.yml
